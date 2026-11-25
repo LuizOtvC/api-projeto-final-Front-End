@@ -1,0 +1,70 @@
+/* Aula 24: o globals.css fica só com a BASE do site.
+   O visual de cada componente mora no .module.css da pasta dele. */
+:root {
+  --cor-fundo: #F4F5EF;
+  --cor-superficie: #FFFFFF;
+  --cor-texto: #13202D;
+  --cor-texto-suave: #5B6670;
+  --cor-principal: #E07A2E;
+  --cor-principal-escura: #B85F1E;
+  --cor-perigo: #C62828;
+  --cor-ok: #2E7D32;
+  --cor-info: #1565C0;
+  --cor-borda: #D9DCD3;
+  --raio: 8px;
+  --espaco: 1rem;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  font-family: system-ui, "Segoe UI", Roboto, sans-serif;
+  background: var(--cor-fundo);
+  color: var(--cor-texto);
+  line-height: 1.5;
+}
+
+button,
+input,
+select {
+  font: inherit;
+}
+
+button {
+  cursor: pointer;
+  padding: 0.6rem 1rem;
+  border: none;
+  border-radius: var(--raio);
+  background: var(--cor-principal);
+  color: var(--cor-superficie);
+  font-weight: bold;
+}
+
+button:hover {
+  background: var(--cor-principal-escura);
+}
+
+button:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+.botao-secundario {
+  background: transparent;
+  color: var(--cor-texto);
+  border: 1px solid var(--cor-borda);
+}
+
+.botao-secundario:hover {
+  background: var(--cor-borda);
+}
+
+.conteudo {
+  width: 100%;
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: var(--espaco);
+}
