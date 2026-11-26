@@ -1,69 +1,65 @@
-import Image from "next/image";
-import styles from "./page.module.css";
+"use client";
 
-export default function Home() {
+import { useState } from "react";
+import Link from "next/link";
+import { useRouter } from "next/navigation";
+import Botao from "@/components/Botao/Botao";
+import Campo from "@/components/Campo/Campo";
+import Mensagem from "@/components/Mensagem/Mensagem";
+import { cadastrarUsuario } from "@/lib/banco";
+import styles from "../login/login.module.css";
+
+export default function Cadastro() {
+  const router = useRouter();
+  const [dados, setDados] = useState({ nome: "", email: "", senha: "" });
+  const [erro, setErro] = useState("");
+  const [enviando, setEnviando] = useState(false);
+
+  const mudar = (event) => {
+    const { name, value } = event.target;
+    setDados({ ...dados, [name]: value });
+  };
+
+  const enviar = async (event) => {
+    event.preventDefault();
+    setErro("");
+    setEnviando(true);
+    try {
+      await cadastrarUsuario(dados);
+      router.push("/login"); // conta criada: agora é só entrar
+    } catch (e) {
+      setErro(e.message); // 400 (campo vazio) ou 409 (e-mail repetido)
+      setEnviando(false);
+    }
+  };
+
   return (
-    <div className={styles.page}>
-      <main className={styles.main}>
-        <Image
-          className={styles.logo}
-          src="/next.svg"
-          alt="Next.js logo"
-          width={100}
-          height={20}
-          priority
-        />
-        <div className={styles.intro}>
-          <h1>
-            To get started, edit the{" "}
-            <code className={styles.code}>page.js</code> file.
-          </h1>
-          <p>
-            Looking for a starting point or more instructions? Head over to{" "}
-            <a
-              href="https://vercel.com/templates?framework=next.js&utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-              target="_blank"
-              rel="noopener noreferrer"
-            >
-              Templates
-            </a>{" "}
-            or the{" "}
-            <a
-              href="https://nextjs.org/learn?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-              target="_blank"
-              rel="noopener noreferrer"
-            >
-              Learning
-            </a>{" "}
-            center.
-          </p>
-        </div>
-        <div className={styles.ctas}>
-          <a
-            className={styles.primary}
-            href="https://vercel.com/new?utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            <Image
-              className={styles.logo}
-              src="/vercel.svg"
-              alt="Vercel logomark"
-              width={16}
-              height={14}
-            />
-            Deploy Now
-          </a>
-          <a
-            className={styles.secondary}
-            href="https://nextjs.org/docs?utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Documentation
-          </a>
-        </div>
-      </main>
-    </div>
+    <form className={styles.login} onSubmit={enviar} noValidate>
+      <h1>Criar conta</h1>
+      <Mensagem tipo="erro">{erro}</Mensagem>
+      <Campo rotulo="Nome" id="nome" name="nome" value={dados.nome} onChange={mudar} />
+      <Campo
+        rotulo="E-mail"
+        id="email"
+        name="email"
+        type="email"
+        value={dados.email}
+        onChange={mudar}
+      />
+      <Campo
+        rotulo="Senha"
+        id="senha"
+        name="senha"
+        type="password"
+        value={dados.senha}
+        onChange={mudar}
+      />
+      <Botao type="submit" disabled={enviando}>
+        {enviando ? "Criando..." : "Criar conta"}
+      </Botao>
+      <p className={styles.linkCadastro}>
+  Já tem conta? <Link href="/login">Entrar</Link>
+</p>
+    </form>
   );
 }

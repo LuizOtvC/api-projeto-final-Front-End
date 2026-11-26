@@ -1,33 +1,61 @@
+
 "use client";
 
+import { useEffect, useState } from "react";
 import { useParams, useRouter } from "next/navigation";
-import Formchamado from "@/components/FormChamado/FormChamado";
+import FormChamado from "@/components/FormChamado/FormChamado";
 import RotaProtegida from "@/components/RotaProtegida/RotaProtegida";
 import Mensagem from "@/components/Mensagem/Mensagem";
-import { chamados, categorias } from "@/dados/exemplo";
+import { categorias } from "@/dados/exemplo";
+import { buscarChamado, atualizarChamado } from "@/lib/banco";
 
-// Rota "/chamados/[id]/editar": o MESMO formulário, agora começando preenchido.
-export default function Editarchamado() {
+export default function EditarChamado() {
   const { id } = useParams();
   const router = useRouter();
-  const chamado = chamados.find((r) => r.id === Number(id));
+
+  const [chamado, setChamado] = useState(null);
+  const [carregando, setCarregando] = useState(true);
+
+  useEffect(() => {
+    async function carregarChamado() {
+      try {
+        const dados = await buscarChamado(id);
+        setChamado(dados);
+      } catch (error) {
+        console.error("Erro ao buscar chamado:", error);
+      } finally {
+        setCarregando(false);
+      }
+    }
+
+    carregarChamado();
+  }, [id]);
 
   const salvar = async (dados) => {
-    console.log("Atualizar:", id, dados); // etapa 3: aqui entra o PUT na API
-    router.push(`/chamados/${id}`); // volta para o detalhe
+    try {
+      await atualizarChamado(id, dados);
+      router.push(`/chamados/${id}`);
+    } catch (error) {
+      console.error("Erro ao atualizar chamado:", error);
+    }
   };
 
   return (
     <RotaProtegida>
       <h1>Editar chamado</h1>
-      {chamado ? (
-        <Formchamado
+
+      {carregando ? (
+        <p>Carregando chamado...</p>
+      ) : chamado ? (
+        <FormChamado
           categorias={categorias}
           chamadoInicial={chamado}
           aoSalvar={salvar}
         />
       ) : (
-        <Mensagem tipo="erro">chamado não encontrada.</Mensagem>
+        <Mensagem tipo="erro">
+          Chamado não encontrado.
+        </Mensagem>
       )}
     </RotaProtegida>
   );

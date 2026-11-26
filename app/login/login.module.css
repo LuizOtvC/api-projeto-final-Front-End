@@ -10,3 +10,26 @@
 .login h1 {
   margin-top: 0;
 }
+.login p {
+  margin-bottom: 0;
+}
+
+.linkCadastro {
+  text-align: center;
+  margin: 1.25rem 0 0;
+  padding-top: 1rem;
+  border-top: 1px solid var(--cor-borda);
+  color: var(--cor-texto-secundario);
+  font-size: 0.9rem;
+}
+
+.linkCadastro a {
+  color: var(--cor-principal);
+  font-weight: 600;
+  text-decoration: none;
+  transition: opacity var(--transicao);
+}
+
+.linkCadastro a:hover {
+  text-decoration: underline;
+}

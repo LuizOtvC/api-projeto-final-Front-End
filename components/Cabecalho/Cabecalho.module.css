@@ -1,3 +1,32 @@
+:root {
+  /* Paleta de Cores */
+  --cor-fundo: #F4F5EF;
+  --cor-superficie: #FFFFFF;
+  --cor-texto: #13202D;
+  --cor-texto-suave: #5B6670;
+  
+  /* Marca e Ações */
+  --cor-principal: #E07A2E;
+  --cor-principal-escura: #B85F1E;
+  --cor-principal-suave: rgba(224, 122, 46, 0.15); /* Ótimo para foco e badges */
+  
+  /* Feedback */
+  --cor-perigo: #C62828;
+  --cor-ok: #2E7D32;
+  --cor-info: #1565C0;
+  
+  /* Estrutura e Sombras */
+  --cor-borda: #D9DCD3;
+  --cor-borda-hover: #BEC3B6;
+  --sombra-sm: 0 1px 2px rgba(19, 32, 45, 0.05);
+  --sombra-md: 0 4px 12px rgba(19, 32, 45, 0.08);
+  
+  /* Métricas */
+  --raio: 8px;
+  --espaco: 1rem;
+  --transicao: 0.2s cubic-bezier(0.25, 0.8, 0.25, 1);
+}
+
 .cabecalho {
   display: flex;
   flex-wrap: wrap;
@@ -35,5 +64,16 @@
 }
 
 .menu button {
+  background-color: var(--cor-texto);
   color: var(--cor-superficie);
+}
+.botao-secundario {
+  
+  color: var(--cor-perigo);
+  border-color: var(--cor-perigo);
+}
+
+.botao-secundario:hover:not(:disabled) {
+  background-color: var(--cor-fundo);
+  border-color: var(--cor-borda-hover);
 }

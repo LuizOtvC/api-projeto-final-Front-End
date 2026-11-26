@@ -6,7 +6,7 @@ import { useSessao, sair } from "@/lib/sessao";
 import styles from "./Cabecalho.module.css";
 
 const LINKS = [
-  { href: "/", texto: "Receitas" },
+  { href: "/", texto: "Chamados" },
   { href: "/chamados/novo", texto: "Novo chamado" },
 ];
 

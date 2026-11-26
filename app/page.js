@@ -13,11 +13,11 @@ export default function PaginaInicial() {
   const [categoria, setCategoria] = useState(0); // 0 = todas
 
   useEffect(() => {
-    const salvo = localStorage.getItem("chamados");
+    const salvo = localStorage.getItem("banco-chamados");
     if (salvo) {
       setLista(JSON.parse(salvo));
     } else {
-      localStorage.setItem("chamados", JSON.stringify(chamadosIniciais));
+      setLista(chamadosIniciais);
     }
   }, []);
 

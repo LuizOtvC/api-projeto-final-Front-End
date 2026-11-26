@@ -6,29 +6,45 @@ import Campo from "@/components/Campo/Campo";
 import Botao from "@/components/Botao/Botao";
 import Mensagem from "@/components/Mensagem/Mensagem";
 import { entrar } from "@/lib/sessao";
+import { fazerLogin } from "@/lib/banco"; 
 import styles from "./login.module.css";
+import Link from "next/link";
 
 export default function Login() {
   const router = useRouter();
   const [email, setEmail] = useState("");
   const [senha, setSenha] = useState("");
   const [erro, setErro] = useState("");
+  const [carregando, setCarregando] = useState(false);
 
-  const enviar = (event) => {
+  const enviar = async (event) => {
     event.preventDefault();
+    setErro("");
+
     if (email.trim() === "" || senha === "") {
       setErro("Preencha e-mail e senha.");
       return;
     }
-    // etapa 3: aqui entra o POST /login, que devolve o token de verdade
-    entrar("token-de-teste", email.split("@")[0]);
-    router.replace("/"); // replace: o "voltar" do navegador não volta para o login
+
+    try {
+      setCarregando(true);
+      const { token, nome } = await fazerLogin({ email, senha });
+
+      entrar(token, nome);
+      router.replace("/");
+    } catch (err) {
+      setErro(err.message || "Erro ao fazer login.");
+    } finally {
+      setCarregando(false);
+    }
   };
+
+  
 
   return (
     <form className={styles.login} onSubmit={enviar} noValidate>
       <h1>Entrar</h1>
-      <Mensagem tipo="erro">{erro}</Mensagem>
+      {erro && <Mensagem tipo="erro">{erro}</Mensagem>}
       <Campo
         rotulo="E-mail"
         id="email"
@@ -43,7 +59,12 @@ export default function Login() {
         value={senha}
         onChange={(e) => setSenha(e.target.value)}
       />
-      <Botao type="submit">Entrar</Botao>
+      <Botao type="submit" disabled={carregando}>
+        {carregando ? "Entrando..." : "Entrar"}
+      </Botao>
+      <p className={styles.linkCadastro}>
+  Não possui conta? <Link href="/cadastro">Cadastre-se</Link>
+</p>
     </form>
   );
 }

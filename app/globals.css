@@ -1,70 +1,156 @@
 /* Aula 24: o globals.css fica só com a BASE do site.
    O visual de cada componente mora no .module.css da pasta dele. */
 :root {
+  /* Paleta de Cores */
   --cor-fundo: #F4F5EF;
   --cor-superficie: #FFFFFF;
   --cor-texto: #13202D;
   --cor-texto-suave: #5B6670;
+  
+  /* Marca e Ações */
   --cor-principal: #E07A2E;
   --cor-principal-escura: #B85F1E;
+  --cor-principal-suave: rgba(224, 122, 46, 0.15); /* Ótimo para foco e badges */
+  
+  /* Feedback */
   --cor-perigo: #C62828;
   --cor-ok: #2E7D32;
   --cor-info: #1565C0;
+  
+  /* Estrutura e Sombras */
   --cor-borda: #D9DCD3;
+  --cor-borda-hover: #BEC3B6;
+  --sombra-sm: 0 1px 2px rgba(19, 32, 45, 0.05);
+  --sombra-md: 0 4px 12px rgba(19, 32, 45, 0.08);
+  
+  /* Métricas */
   --raio: 8px;
   --espaco: 1rem;
+  --transicao: 0.2s cubic-bezier(0.25, 0.8, 0.25, 1);
 }
 
-* {
+*,
+*::before,
+*::after {
   box-sizing: border-box;
+}
+
+html {
+  scroll-behavior: smooth;
 }
 
 body {
   margin: 0;
-  font-family: system-ui, "Segoe UI", Roboto, sans-serif;
-  background: var(--cor-fundo);
+  font-family: system-ui, -apple-system, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+  background-color: var(--cor-fundo);
   color: var(--cor-texto);
-  line-height: 1.5;
+  line-height: 1.6;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
 }
 
+/* Seleção de texto personalizada com a cor da marca */
+::selection {
+  background-color: var(--cor-principal);
+  color: var(--cor-superficie);
+}
+
+/* Elementos de Formulário Base */
 button,
 input,
-select {
+select,
+textarea {
   font: inherit;
+  color: inherit;
 }
 
-button {
-  cursor: pointer;
-  padding: 0.6rem 1rem;
-  border: none;
+input,
+select,
+textarea {
+  padding: 0.6rem 0.85rem;
+  border: 1px solid var(--cor-borda);
   border-radius: var(--raio);
-  background: var(--cor-principal);
-  color: var(--cor-superficie);
-  font-weight: bold;
+  background-color: var(--cor-superficie);
+  transition: border-color var(--transicao), box-shadow var(--transicao);
 }
 
-button:hover {
-  background: var(--cor-principal-escura);
+input::placeholder,
+textarea::placeholder {
+  color: var(--cor-texto-suave);
+  opacity: 0.8;
+}
+
+input:hover:not(:disabled),
+select:hover:not(:disabled),
+textarea:hover:not(:disabled) {
+  border-color: var(--cor-borda-hover);
+}
+
+/* Foco acessível e moderno para teclado e formulários */
+button:focus-visible,
+input:focus-visible,
+select:focus-visible,
+textarea:focus-visible,
+a:focus-visible {
+  outline: none;
+  border-color: var(--cor-principal);
+  box-shadow: 0 0 0 3px var(--cor-principal-suave);
+}
+
+/* Botões */
+button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  cursor: pointer;
+  padding: 0.65rem 1.25rem;
+  border: 1px solid transparent;
+  border-radius: var(--raio);
+  background-color: var(--cor-principal);
+  color: var(--cor-superficie);
+  font-weight: 600;
+  letter-spacing: 0.01em;
+  box-shadow: var(--sombra-sm);
+  transition: 
+    background-color var(--transicao),
+    border-color var(--transicao),
+    transform 0.1s ease,
+    box-shadow var(--transicao);
+}
+
+button:hover:not(:disabled) {
+  background-color: var(--cor-principal-escura);
+  box-shadow: var(--sombra-md);
+}
+
+button:active:not(:disabled) {
+  transform: scale(0.98);
+  box-shadow: none;
 }
 
 button:disabled {
-  opacity: 0.5;
+  opacity: 0.55;
   cursor: not-allowed;
+  box-shadow: none;
 }
 
+/* Variação Secundária */
 .botao-secundario {
-  background: transparent;
+  background-color: var(--cor-superficie);
   color: var(--cor-texto);
-  border: 1px solid var(--cor-borda);
+  border-color: var(--cor-borda);
 }
 
-.botao-secundario:hover {
-  background: var(--cor-borda);
+.botao-secundario:hover:not(:disabled) {
+  background-color: var(--cor-fundo);
+  border-color: var(--cor-borda-hover);
 }
 
+/* Container Principal */
 .conteudo {
   width: 100%;
   max-width: 1200px;
   margin: 0 auto;
-  padding: var(--espaco);
+  padding: calc(var(--espaco) * 1.5) var(--espaco);
 }
